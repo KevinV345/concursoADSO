@@ -31,13 +31,7 @@ app.get('/empezar', (req, res) => {
     res.json(empezo);
 });
 
-var correctas={
-    "jose1":1,
-    "jose2":2,
-    "jose3":1,
-    "jose4":2,
-    "jose5":4,
-}
+var correctas={}
 app.get('/register', (req, res) => {
     if(correctas[req.query.n]!=undefined){
         res.send("error");
