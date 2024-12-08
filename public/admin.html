@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="fetch('/empezar-juego');this.style.display='none'">empezar</button>
+    <h2>Terminaron</h2>
+    <div id="terminaron"></div>
+    <h2>Faltan</h2>
+    <div id="faltan"></div>
+
+    <script>
+        setInterval(()=>{
+            fetch("/lista").then(r=>r.json()).then((e)=>{
+                var str=""
+                e.terminaron.forEach(e => {
+                    str+="<span>"+e.n+": "+e.p+"</span><br>"
+                });
+                document.getElementById("terminaron").innerHTML=str
+                str=""
+                e.faltan.forEach(e => {
+                    str+="<span>"+e.n+": "+e.p+"</span><br>"
+                });
+                document.getElementById("faltan").innerHTML=str
+
+            })
+        },1000)
+    </script>
+    
+</body>
+</html>

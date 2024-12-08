@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            user-select: none;
+        }
+        .res_parent{
+            display: flex;
+            flex-direction: row;
+        }
+        .respuesta{
+            display: inline-block;
+            width: 45%;
+            text-align: center;
+            border: 1px solid #000;
+            cursor: pointer;
+            height: 20vh;
+            margin: auto;
+            padding: 0px;
+            margin-top: 5vh;
+            font-size: 5vh;
+        }
+        #pregunta{
+            text-align: center;
+        }
+        button{
+            height: 10vh;
+            width: 25vh;
+            margin: 5vh;
+            font-size: 5vh;
+        }
+        h1{
+            font-size: 7vh;
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1 id="pregunta">what is the meaning of <span id="termino">jijijijijija</span>?</h1>
+    
+    <div class="res_parent">
+        <p class="respuesta" >respuesta 1</p>
+        <p class="respuesta" >respuesta 1</p>
+    </div>
+    <div class="res_parent">
+        <p class="respuesta" >respuesta 1</p>
+        <p class="respuesta" >respuesta 1</p>
+    </div>
+    <button style="display: none;" onclick="iniciar()" >Continuar</button>
+    
+    <script>
+        if(localStorage.getItem("end")=="true"){
+            window.location.replace("/end.html");
+        }
+        fetch("/reiniciar?n="+localStorage.getItem("nombre"))
+
+
+
+        var data={
+            "Algorithm":"Conjunto de instrucciones ordenadas para resolver un problema",
+            "API":"Interfaz de programación de aplicaciones",
+            "Array":"Estructura de datos que almacena elementos en posiciones contiguas de memoria",
+            "Boolean":"Tipo de dato que puede ser verdadero o falso",
+            "Bug":"Defecto en un programa que causa un comportamiento inesperado.",
+            "Compile":"Proceso de traducir código fuente a código máquina ejecutable.",
+            "Deployment":"Proceso de instalar software en un entorno de producción.",
+            "Concurrency":"Ejecución simultánea de varias tareas o procesos.",
+            "Framework":"Conjunto de herramientas y librerías para facilitar el desarrollo de software.",
+            "Function":"Bloque de código que realiza una tarea específica.",
+            "Iteration":"Repetición de un conjunto de instrucciones.",
+            "Library":"Colección de funciones y herramientas reutilizables.",
+            "Loop":"Estructura que repite un bloque de código mientras una condición es verdadera.",
+            "Object":"Instancia de una clase en programación orientada a objetos.",
+            "Open Source":"Software cuyo código fuente está disponible para ser modificado.",
+            "Overloading":"Uso de un mismo nombre para múltiples métodos con diferentes parámetros.",
+            "Override":"Reemplazar la implementación de un método en una clase derivada.",
+            "Prototype":"Versión preliminar de un software o sistema.",
+            "Recursion":"Técnica donde una función se llama a sí misma.",
+            "Script":"Archivo de código que se ejecuta como un programa pequeño.",
+            "Stack":"Estructura de datos en LIFO (último en entrar, primero en salir).",
+            "String":"Secuencia de caracteres en programación.",
+            "Variable":"Contenedor para almacenar datos que pueden cambiar durante la ejecución.",
+        }
+
+
+        var keys=Object.keys(data)
+        var current=-1;
+        var seleccionada=false
+
+        
+        
+
+
+        function get_res(curr) { 
+            let respuestas = [data[keys[curr]]]; // Incluye la respuesta inicial
+            let seleccionados = new Set([keys[curr]]); // Asegura que la clave inicial no se repita
+
+            while (respuestas.length < 4) {
+                // Selección aleatoria de índice
+                const randomKey = keys[Math.floor(Math.random() * keys.length)];
+
+                // Si la clave no está ya seleccionada, añade el valor correspondiente
+                if (!seleccionados.has(randomKey)) {
+                    seleccionados.add(randomKey); // Marca la clave como usada
+                    respuestas.push(data[randomKey]); // Añade el valor al array de respuestas
+                }
+            }
+
+            // Desordenar las respuestas para no dar pistas
+            respuestas.sort(() => Math.random() - 0.5);
+            
+            return respuestas;   
+        }
+        
+
+        document.querySelectorAll(".respuesta").forEach((e)=>{
+            e.onclick=p=>{
+                if(seleccionada)return;
+                seleccionada=true;
+                if(p.target.innerHTML==data[keys[current]]){
+                    p.target.style.backgroundColor="green"
+                    fetch("/correcta?n="+localStorage.getItem("nombre")).then(()=>{
+                        document.querySelector("button").style.display="inline"
+                    }).catch((e)=>{
+                        alert(e)
+                        document.querySelector("button").style.display="inline"
+                    });
+                    
+                }else{
+                    p.target.style.backgroundColor="red"
+                    document.querySelectorAll(".respuesta").forEach((ee)=>{
+                        if(ee.innerHTML==data[keys[current]]){
+                            ee.style.backgroundColor="green"
+                        }
+                    })
+                    document.querySelector("button").style.display="inline"
+                }
+            } 
+        })
+        function iniciar(){
+            document.querySelector("button").style.display="none"
+            current++
+            if(current>=keys.length){
+
+                fetch("/end?n="+localStorage.getItem("nombre")).then(()=>{
+                    localStorage.setItem("end",true)
+                    window.location.replace("/end.html");
+                })
+                
+                
+                return
+            }
+            seleccionada=false
+            document.getElementById("termino").innerHTML=keys[current]
+            var respuestas=localStorage.getItem(current)
+            if(!respuestas){
+                var respuestas=get_res(current);
+                localStorage.setItem(current,JSON.stringify(respuestas))
+            }else{
+                respuestas=JSON.parse(respuestas)
+            }
+
+
+            var res_elements=document.querySelectorAll(".respuesta");
+            for(var i=0;i<4;i++){
+                res_elements[i].innerHTML=respuestas[i]
+                res_elements[i].style.backgroundColor="white"
+                
+            }
+
+        }
+        iniciar();
+
+
+    </script>
+</body>
+</html>

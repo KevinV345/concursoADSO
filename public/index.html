@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text">
+    <button onclick="oclick()" >Empezar</button>
+    <script>
+        if(localStorage.getItem("end")=="true"){
+            window.location.replace("/end.html");
+        }
+        function oclick(){
+            if(document.querySelector("input").value){
+                console.log(document.querySelector("input").value)
+                fetch("register?n="+document.querySelector("input").value).then(r=>r.text()).then(
+                    (e)=>{
+                        if(e=="error"){
+                            alert("elija otro nombre")
+                        }else{
+                            localStorage.setItem("nombre",document.querySelector("input").value)
+                            window.location.replace("/wait.html")
+                        }
+                    }
+                );
+            }
+        }
+    </script>
+    
+</body>
+</html>
