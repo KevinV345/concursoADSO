@@ -54,38 +54,27 @@
     <button style="display: none;" onclick="iniciar()" >Continuar</button>
     
     <script>
-        if(localStorage.getItem("end")=="true"){
+        if(localStorage.getItem("end2")=="true"){
             window.location.replace("/end.html");
         }
         fetch("/reiniciar?n="+localStorage.getItem("nombre"))
 
 
 
-        var data={
-            "Algorithm":"Conjunto de instrucciones ordenadas para resolver un problema",
-            "API":"Interfaz de programación de aplicaciones",
-            "Array":"Estructura de datos que almacena elementos en posiciones contiguas de memoria",
-            "Boolean":"Tipo de dato que puede ser verdadero o falso",
-            "Bug":"Defecto en un programa que causa un comportamiento inesperado.",
-            "Compile":"Proceso de traducir código fuente a código máquina ejecutable.",
-            "Deployment":"Proceso de instalar software en un entorno de producción.",
-            "Concurrency":"Ejecución simultánea de varias tareas o procesos.",
-            "Framework":"Conjunto de herramientas y librerías para facilitar el desarrollo de software.",
-            "Function":"Bloque de código que realiza una tarea específica.",
-            "Iteration":"Repetición de un conjunto de instrucciones.",
-            "Library":"Colección de funciones y herramientas reutilizables.",
-            "Loop":"Estructura que repite un bloque de código mientras una condición es verdadera.",
-            "Object":"Instancia de una clase en programación orientada a objetos.",
-            "Open Source":"Software cuyo código fuente está disponible para ser modificado.",
-            "Overloading":"Uso de un mismo nombre para múltiples métodos con diferentes parámetros.",
-            "Override":"Reemplazar la implementación de un método en una clase derivada.",
-            "Prototype":"Versión preliminar de un software o sistema.",
-            "Recursion":"Técnica donde una función se llama a sí misma.",
-            "Script":"Archivo de código que se ejecuta como un programa pequeño.",
-            "Stack":"Estructura de datos en LIFO (último en entrar, primero en salir).",
-            "String":"Secuencia de caracteres en programación.",
-            "Variable":"Contenedor para almacenar datos que pueden cambiar durante la ejecución.",
-        }
+        var data = {
+            "Binary": "A system of numerical notation that uses only two digits (0 and 1)",
+            "Random": "A value or process that lacks a predictable pattern",
+            "Source": "The original code or data from which something is derived",
+            "Formula": "A structured expression used to compute values or define rules",
+            "Information": "Processed or structured data that provides meaningful insights",
+            "Data": "Raw values or facts stored and processed by software",
+            "Code": "A set of instructions written in a programming language",
+            "Process": "An executing instance of a program in an operating system",
+            "System": "A combination of software and hardware components working together",
+            "Function": "A reusable block of code that performs a specific task"
+        };
+
+
 
 
         var keys=Object.keys(data)
@@ -140,7 +129,7 @@
                     })
                     document.querySelector("button").style.display="inline"
                 }
-            } 
+            }
         })
         function iniciar(){
             document.querySelector("button").style.display="none"
@@ -148,7 +137,7 @@
             if(current>=keys.length){
 
                 fetch("/end?n="+localStorage.getItem("nombre")).then(()=>{
-                    localStorage.setItem("end",true)
+                    localStorage.setItem("end2",true)
                     window.location.replace("/end.html");
                 })
                 
